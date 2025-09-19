@@ -1,4 +1,4 @@
-// REPLACE with your own Privy App ID from the dashboard
+// YOUR Privy App ID is already here
 const YOUR_PRIVY_APP_ID = 'cmfqs83ei00ghjp0c6gs8ddtp';
 const MONAD_CROSS_APP_ID = 'cmd8euall0037le0my79qpz42';
 
@@ -32,19 +32,16 @@ export async function getMonadInfo() {
     const user = window.privy.user;
     if (!user) return null;
 
-    // Find the Monad Games ID linked account
     const crossAppAccount = user.linkedAccounts.find(
         account => account.type === "cross_app" && account.providerApp.id === MONAD_CROSS_APP_ID
     );
 
-    if (!crossAppAccount || crossAppAccount.embeddedWallets.length === 0) {
+    if (!crossAppAccount || !crossAppAccount.embeddedWallets || crossAppAccount.embeddedWallets.length === 0) {
         return { walletAddress: null, username: null };
     }
 
-    // Get the wallet address
     const walletAddress = crossAppAccount.embeddedWallets[0].address;
 
-    // Fetch the username from the API
     try {
         const response = await fetch(`https://monad-games-id-site.vercel.app/api/check-wallet?wallet=${walletAddress}`);
         const data = await response.json();
