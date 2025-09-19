@@ -3,77 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SlashNAD</title>
+    <meta name="description" content="SlashNAD - A fast-paced, on-chain crypto slashing game on the Monad Testnet.">
+    <link rel="icon" href="btc.png" type="image/png">
+    <title>SlashNAD - A Game on Monad</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto&display=swap" rel="stylesheet">
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <canvas id="bgCanvas" class="background-canvas"></canvas>
-    <div id="lobby-container" class="container purple-panel">
-        <header class="header">
-            <h1 class="game-title">Slash<span class="neon-text">NAD</span></h1>
-            <div class="logo-container">
-                <img src="mon-logo.png" alt="MON Logo" class="mon-logo">
-                <img src="purple-pepe.png" alt="Purple Pepe" class="pepe-logo">
-            </div>
-        </header>
-        <div class="wallet-section purple-card">
-            <button id="connectWalletBtn" class="btn purple-btn">Connect Wallet</button>
-            <div id="wallet-info">
-                <p id="playerAddress" class="hidden player-info">Player: Not Connected</p>
-                <p id="wokeBalance" class="hidden balance-info">Balance: 0 $NAD</p>
-            </div>
-            <button id="disconnectWalletBtn" class="btn disconnect-btn">Disconnect</button>
+
+    <div id="lobby-container">
+        <div class="main-container">
+            <header class="game-title">
+                <h1>SlashNAD</h1>
+            </header>
+
+            <main class="content-area">
+                <div id="wallet-section" class="card">
+                    <button id="connectWalletBtn">Connect Wallet</button>
+                    <div id="wallet-info" class="hidden">
+                        <div class="wallet-details">
+                            <p id="playerAddress"></p>
+                            <p id="wokeBalance"></p>
+                        </div>
+                        <button id="disconnectWalletBtn">Disconnect</button>
+                    </div>
+                </div>
+
+                <div id="controls-section" class="card hidden">
+                    <button id="gmBtn">GM On-chain</button>
+                    <button id="startGameBtn">Start Slashing!</button>
+                </div>
+
+                <div id="leaderboard-section" class="card">
+                    <h2>Top Slashers</h2>
+                    <div id="leaderboard-loading">Loading high scores...</div>
+                    <ol id="leaderboard-list"></ol>
+                </div>
+                
+                <div class="card social-links-card">
+                    <p class="developer-credit">Developed by Irfan.eth</p>
+                    <ul>
+                        <li><a href="https://x.com/Irrfan_eth" target="_blank" rel="noopener noreferrer">Follow Irfan</a></li>
+                        <li><a href="https://x.com/monad_xyz" target="_blank" rel="noopener noreferrer">Follow Monad</a></li>
+                        <li><a href="https://discord.gg/monad" target="_blank" rel="noopener noreferrer">Join Discord</a></li>
+                    </ul>
+                </div>
+            </main>
         </div>
-        <div class="controls-section hidden purple-card">
-            <button id="gmBtn" class="btn gm-btn">GM On-chain</button>
-            <button id="startGameBtn" class="btn start-btn">Start Slashing!</button>
-        </div>
-        <div class="leaderboard-section purple-card">
-            <h3 class="section-title">Top Slashers</h3>
-            <div id="leaderboard-loading" class="loading-text">Loading high scores...</div>
-            <ul id="leaderboard-list" class="leaderboard-list"></ul>
-        </div>
-        <footer class="footer purple-card">
-            <p class="developer-credit">Developed by Irfan.eth</p>
-            <ul class="social-links">
-                <li><a href="https://x.com/Irrfan_eth" target="_blank" class="social-link">Follow Irfan</a></li>
-                <li><a href="https://x.com/Monad_xyz" target="_blank" class="social-link">Follow Monad</a></li>
-                <li><a href="https://discord.gg/monad" target="_blank" class="social-link">Join Discord</a></li>
-            </ul>
-        </footer>
     </div>
 
     <div id="game-container" class="hidden">
-        <div class="hud">
+        <canvas id="gameCanvas"></canvas>
+        <div id="countdown" class="hidden"></div>
+        <div class="ui-overlay">
             <div id="scoreDisplay" class="game-stat">Score: 0</div>
             <div id="highScoreDisplay" class="game-stat">High Score: 0</div>
         </div>
-        <canvas id="gameCanvas"></canvas>
-        <div id="countdown" class="countdown hidden"></div>
-    </div>
-
-    <div id="gameOverModal" class="modal hidden">
-        <div class="modal-content purple-modal">
-            <h2 class="modal-title">GAME OVER</h2>
-            <p class="final-score">Final Score: <span id="finalScore">0</span></p>
-            <button id="claimTokensBtn" class="btn claim-btn">Claim $NAD</button>
-            <button id="playAgainBtn" class="btn play-again-btn">Play Again</button>
-            <div id="claimStatus" class="claim-status"></div>
-            <button id="backToLobbyBtn" class="btn back-btn">Back to Lobby</button>
+        <div id="gameOverModal" class="modal-overlay hidden">
+            <div class="card modal-content">
+                <h2 class="modal-title">GAME OVER</h2>
+                <p class="final-score">Final Score: <span id="finalScore">0</span></p>
+                <div class="modal-buttons">
+                    <button id="claimTokensBtn">Claim $NAD</button>
+                    <button id="playAgainBtn">Play Again</button>
+                </div>
+                <p id="claimStatus" class="claim-status"></p>
+                <button id="backToLobbyBtn" class="back-link">Back to Lobby</button>
+            </div>
         </div>
     </div>
 
-    <audio id="launchSound" preload="auto">
-        <source src="launch.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sliceSound" preload="auto">
-        <source src="slice.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="launchSound" src="launch.mp3" preload="auto"></audio>
+    <audio id="sliceSound" src="slice.mp3" preload="auto"></audio>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <script type="module" src="script.js"></script>
-    <script type="module" src="wallet.js"></script>
-    <script type="module" src="bg.js"></script>
 </body>
 </html>
