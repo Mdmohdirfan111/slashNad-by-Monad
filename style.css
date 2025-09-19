@@ -1,281 +1,133 @@
-/* ---- GLOBAL STYLES & PURPLE/MONAD THEME ---- */
+/* ---- GLOBAL STYLES & PURPLE/TECH THEME ---- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #180926; /* Deep Purple */
-    background-image: url('https://www.transparenttextures.com/patterns/subtle-grid.png');
-    color: #EAE0FF; /* Light Lavender */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    overflow: hidden;
-    position: relative;
-}
-
-.background-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
+body { 
+    font-family: 'Roboto', sans-serif; 
+    background-color: #180926; /* Dark Purple Background for Lobby */
+    background-image: url('https://www.transparenttextures.com/patterns/subtle-grid.png'); 
+    color: #EAE0FF; /* Light Lavender Text */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 20px; 
+    overflow: hidden; 
 }
 
 /* ---- LOBBY STYLES ---- */
-.container {
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-    z-index: 1;
-    position: relative;
+.main-container { width: 100%; max-width: 600px; text-align: center; }
+.game-title h1 { 
+    font-family: 'Orbitron', sans-serif; 
+    font-size: 4.5rem; 
+    color: #fff; 
+    text-shadow: 0 0 10px #D001FF, 0 0 20px #D001FF, 0 0 30px #D001FF; /* Purple Neon Glow */
+    margin-bottom: 30px; 
 }
-
-.header {
-    margin-bottom: 30px;
-}
-
-.game-title h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4.5rem;
-    color: #fff;
-    text-shadow: 0 0 10px #D001FF, 0 0 20px #D001FF, 0 0 30px #D001FF;
-    margin-bottom: 10px;
-}
-
-.neon-text {
-    color: #D001FF;
-    animation: neonGlow 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes neonGlow {
-    from { text-shadow: 0 0 5px #D001FF, 0 0 10px #D001FF; }
-    to { text-shadow: 0 0 10px #D001FF, 0 0 20px #D001FF, 0 0 30px #D001FF; }
-}
-
-.logo-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.mon-logo, .pepe-logo {
-    width: 50px;
-    height: 50px;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.purple-card {
-    background: rgba(24, 9, 38, 0.9);
-    border: 2px solid #D001FF;
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 25px;
+.card { 
+    background-color: rgba(24, 9, 38, 0.7); /* Transparent Dark Purple */
+    border: 2px solid #D001FF; 
+    border-radius: 15px; 
+    padding: 25px; 
+    margin-bottom: 25px; 
     box-shadow: 0 0 15px rgba(208, 1, 255, 0.4), inset 0 0 10px rgba(208, 1, 255, 0.2);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px); 
     transition: all 0.3s ease;
 }
-
-.purple-card:hover {
+.card:hover {
     border-color: #fff;
     box-shadow: 0 0 25px rgba(208, 1, 255, 0.8), inset 0 0 15px rgba(208, 1, 255, 0.4);
 }
-
-.btn {
+button { 
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
-    font-size: 1.2rem;
-    color: #EAE0FF;
-    background: transparent;
-    border: 2px solid #D001FF;
-    padding: 12px 25px;
-    border-radius: 10px;
-    cursor: pointer;
+    font-size: 1.2rem; 
+    color: #EAE0FF; 
+    background-color: transparent; 
+    border: 2px solid #D001FF; 
+    padding: 12px 25px; 
+    border-radius: 10px; 
+    cursor: pointer; 
     transition: all 0.2s ease-in-out;
-    margin: 5px;
+    margin: 5px; 
 }
-
-.btn:hover {
-    background: #D001FF;
+button:hover { 
+    background-color: #D001FF; 
     color: #fff;
     box-shadow: 0 0 15px #D001FF;
 }
-
-.btn:disabled {
+button:active {
+    transform: scale(0.95);
+}
+button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
-
-.start-btn {
-    background: #D001FF;
+#startGameBtn { 
+    background-color: #D001FF; 
     color: #fff;
-    border-color: #D001FF;
-    font-size: 1.5rem;
+    border-color: #D001FF; 
+    font-size: 1.5rem; 
 }
-
-.start-btn:hover {
-    background: #fff;
+#startGameBtn:hover { 
+    background-color: #fff;
     color: #D001FF;
     box-shadow: 0 0 20px #fff;
 }
 
-.disconnect-btn {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-    margin-top: 10px;
-    border-color: #888;
-}
-
-.disconnect-btn:hover {
-    background: #888;
-    border-color: #888;
-    color: #180926;
-    box-shadow: none;
-}
-
-.player-info, .balance-info {
-    margin: 8px 0;
-    font-size: 1.2rem;
-    color: #fff;
-}
-
-.section-title {
-    font-size: 1.8rem;
-    color: #D001FF;
-    text-shadow: 0 0 5px #D001FF;
-    margin-bottom: 15px;
-}
-
-.leaderboard-list {
-    list-style: none;
-    padding: 0;
-    text-align: left;
-}
-
-.leaderboard-list li {
-    padding: 10px;
-    border-bottom: 1px solid rgba(208, 1, 255, 0.3);
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
-
-.leaderboard-list li:hover {
-    background: rgba(208, 1, 255, 0.1);
-}
-
-.loading-text {
-    color: #EAE0FF;
-    font-style: italic;
-}
-
-.footer {
-    margin-top: 20px;
-}
-
-.developer-credit {
-    font-size: 1.1rem;
-    color: #EAE0FF;
-    margin-bottom: 15px;
-}
-
-.social-links {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-}
-
-.social-link {
-    color: #D001FF;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.social-link:hover {
-    text-decoration: underline;
-    color: #fff;
-    text-shadow: 0 0 5px #D001FF;
-}
-
-/* ---- GAME & MODAL STYLES ---- */
-.game-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
-#gameCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.hud {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    z-index: 10;
+/* UI POLISH: Improved Wallet Info Layout */
+#wallet-info {
     display: flex;
     justify-content: space-between;
-    font-size: 1.8rem;
-    text-shadow: 0 0 8px #D001FF;
-    font-family: 'Orbitron', sans-serif;
-}
-
-.game-stat {
-    background: rgba(24, 9, 38, 0.7);
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(208, 1, 255, 0.5);
-    backdrop-filter: blur(5px);
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 20;
+    text-align: left;
 }
-
-.purple-modal {
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    background: rgba(24, 9, 38, 0.95);
-    border: 2px solid #D001FF;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 0 15px rgba(208, 1, 255, 0.6);
-    backdrop-filter: blur(5px);
+#wallet-info p { margin: 4px 0; }
+#playerAddress { font-size: 1rem; color: #EAE0FF; word-wrap: break-word; }
+#wokeBalance { font-size: 1.2rem; font-weight: bold; color: #fff; }
+#disconnectWalletBtn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    margin: 0;
+    border-color: #888;
 }
+#disconnectWalletBtn:hover { background-color: #888; border-color: #888; color: #180926; box-shadow: none; }
+#leaderboard-list { list-style: none; padding: 0; }
+#leaderboard-list li { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(208, 1, 255, 0.3); font-size: 1.1rem; }
+#leaderboard-list li:last-child { border-bottom: none; }
 
-.modal-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 3.5rem;
-    color: #fff;
-    text-shadow: 0 0 15px #D001FF;
-    margin-bottom: 20px;
+/* ---- GAMEPLAY STYLES ---- */
+/* BACKGROUND CHANGE: Light purple background for better visibility */
+#game-container { 
+    position: relative; 
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden; 
+    background-color: #2c2541; /* Light-medium purple */
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
 }
-
-.final-score {
-    font-size: 2rem;
-    margin: 20px 0;
-    color
+#gameCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ui-overlay { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 10; display: flex; justify-content: space-between; font-size: 1.8rem; text-shadow: 0 0 8px #000; font-family: 'Orbitron', sans-serif; }
+.game-stat { background-color: rgba(24, 9, 38, 0.5); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(208, 1, 255, 0.5); }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 20; }
+.modal-content { width: 90%; max-width: 500px; text-align: center; }
+.modal-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: #fff; text-shadow: 0 0 15px #D001FF; }
+.final-score { font-size: 2.2rem; margin: 20px 0; font-weight: bold; }
+.claim-status { margin-top: 15px; min-height: 20px; font-size: 1rem; color: #fff; }
+.back-link { font-family: 'Roboto', sans-serif; display: inline-block; margin-top: 20px; color: #EAE0FF; text-decoration: none; background: none; border: none; padding: 0; cursor: pointer; font-size: 1.2rem; }
+.back-link:hover { text-decoration: underline; color: #fff;}
+#countdown { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron', sans-serif; font-size: 8rem; color: white; z-index: 15; text-shadow: 0 0 20px #D001FF, 0 0 40px #D001FF; }
+/* ---- Social Links Card ---- */
+.social-links-card { padding: 15px 25px; }
+.developer-credit { font-size: 1.1rem; color: #EAE0FF; margin-bottom: 15px; }
+.social-links-card ul { list-style: none; padding: 0; display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+.social-links-card a { color: #D001FF; text-decoration: none; font-size: 1.1rem; font-weight: bold; }
+.social-links-card a:hover { text-decoration: underline; color: #fff; }
+/* ---- HELPER CLASS ---- */
+.hidden { display: none; }
+/* ---- MOBILE RESPONSIVENESS ---- */
+@media (max-width: 600px) {
+    .game-title h1 { font-size: 3rem; }
+    .ui-overlay { font-size: 1.2rem; }
+    #countdown { font-size: 6rem; }
+    .modal-title { font-size: 2.5rem; }
+    .final-score { font-size: 1.8rem; }
+}
