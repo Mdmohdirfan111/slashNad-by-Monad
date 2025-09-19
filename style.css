@@ -1,0 +1,111 @@
+/* ---- GLOBAL STYLES & PURPLE/TECH THEME ---- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: 'Roboto', sans-serif; 
+    background-color: #180926; /* Dark Purple Background */
+    background-image: url('https://www.transparenttextures.com/patterns/subtle-grid.png'); 
+    color: #EAE0FF; /* Light Lavender Text */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 20px; 
+    overflow: hidden; 
+}
+
+/* ---- LOBBY STYLES ---- */
+.main-container { width: 100%; max-width: 600px; text-align: center; }
+.game-title h1 { 
+    font-family: 'Orbitron', sans-serif; 
+    font-size: 4.5rem; 
+    color: #fff; 
+    text-shadow: 0 0 10px #D001FF, 0 0 20px #D001FF, 0 0 30px #D001FF; /* Purple Neon Glow */
+    margin-bottom: 30px; 
+}
+.card { 
+    background-color: rgba(24, 9, 38, 0.7); /* Transparent Dark Purple */
+    border: 2px solid #D001FF; 
+    border-radius: 15px; 
+    padding: 25px; 
+    margin-bottom: 25px; 
+    box-shadow: 0 0 15px rgba(208, 1, 255, 0.4), inset 0 0 10px rgba(208, 1, 255, 0.2);
+    backdrop-filter: blur(5px); 
+    transition: all 0.3s ease;
+}
+.card:hover {
+    border-color: #fff;
+    box-shadow: 0 0 25px rgba(208, 1, 255, 0.8), inset 0 0 15px rgba(208, 1, 255, 0.4);
+}
+button { 
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem; 
+    color: #EAE0FF; 
+    background-color: transparent; 
+    border: 2px solid #D001FF; 
+    padding: 12px 25px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    transition: all 0.2s ease-in-out;
+    margin: 5px; 
+}
+button:hover { 
+    background-color: #D001FF; 
+    color: #fff;
+    box-shadow: 0 0 15px #D001FF;
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+#startGameBtn { 
+    background-color: #D001FF; 
+    color: #fff;
+    border-color: #D001FF; 
+    font-size: 1.5rem; 
+}
+#startGameBtn:hover { 
+    background-color: #fff;
+    color: #D001FF;
+    box-shadow: 0 0 20px #fff;
+}
+#wallet-info p { margin: 8px 0; }
+#playerAddress { font-size: 1rem; color: #EAE0FF; word-wrap: break-word; }
+#wokeBalance { font-size: 1.2rem; font-weight: bold; color: #fff; }
+#disconnectWalletBtn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    margin-top: 10px;
+    border-color: #888;
+}
+#disconnectWalletBtn:hover {
+    background-color: #888;
+    border-color: #888;
+    color: #180926;
+    box-shadow: none;
+}
+#leaderboard-list { list-style: none; padding: 0; }
+#leaderboard-list li { padding: 10px; border-bottom: 1px solid rgba(208, 1, 255, 0.3); font-size: 1.1rem; }
+#leaderboard-list li:last-child { border-bottom: none; }
+
+/* ---- GAME & MODAL STYLES ---- */
+.game-container { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+#gameCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ui-overlay { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 10; display: flex; justify-content: space-between; font-size: 1.8rem; text-shadow: 0 0 8px #D001FF; font-family: 'Orbitron', sans-serif; }
+.game-stat { background-color: rgba(24, 9, 38, 0.5); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(208, 1, 255, 0.5); }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 20; }
+.modal-content { width: 90%; max-width: 500px; text-align: center; }
+.modal-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: #fff; text-shadow: 0 0 15px #D001FF; }
+.final-score { font-size: 2rem; margin: 20px 0; }
+.claim-status { margin-top: 15px; min-height: 20px; font-size: 1rem; color: #fff; }
+.back-link { font-family: 'Roboto', sans-serif; display: inline-block; margin-top: 20px; color: #EAE0FF; text-decoration: none; background: none; border: none; padding: 0; cursor: pointer; font-size: 1.2rem; }
+.back-link:hover { text-decoration: underline; color: #fff;}
+#countdown { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron', sans-serif; font-size: 8rem; color: white; z-index: 15; text-shadow: 0 0 20px #D001FF, 0 0 40px #D001FF; }
+/* ---- Social Links Card ---- */
+.social-links-card { padding: 15px 25px; }
+.developer-credit { font-size: 1.1rem; color: #EAE0FF; margin-bottom: 15px; }
+.social-links-card ul { list-style: none; padding: 0; display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+.social-links-card a { color: #D001FF; text-decoration: none; font-size: 1.1rem; font-weight: bold; }
+.social-links-card a:hover { text-decoration: underline; color: #fff; }
+/* ---- HELPER CLASS ---- */
+.hidden { display: none; }
