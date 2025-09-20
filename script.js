@@ -1,28 +1,13 @@
-import { connectMetaMask, updateNadBalance, getOnChainHighScore, handleGm, contract, userAccount, disconnectMetaMask, getMonadInfo, loginWithPrivy, logoutWithPrivy } from './wallet.js';  // Updated imports
+import { connectWallet, updateNadBalance, getOnChainHighScore, handleGm, contract, userAccount, disconnectWallet } from './wallet.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
-    const lobbyContainer = document.getElementById('lobby-container'), gameContainer = document.getElementById('game-container'), 
-          privyLoginBtn = document.getElementById('privyLoginBtn'), connectWalletBtn = document.getElementById('connectWalletBtn'), 
-          gmBtn = document.getElementById('gmBtn'), playerUsernameEl = document.getElementById('playerUsername'), 
-          playerAddressEl = document.getElementById('playerAddress'), wokeBalanceEl = document.getElementById('wokeBalance'), 
-          controlsSection = document.getElementById('controls-section'), leaderboardLoadingEl = document.getElementById('leaderboard-loading'), 
-          leaderboardListEl = document.getElementById('leaderboard-list'), startGameBtn = document.getElementById('startGameBtn'), 
-          canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d'), countdownEl = document.getElementById('countdown'), 
-          scoreDisplay = document.getElementById('scoreDisplay'), highScoreDisplay = document.getElementById('highScoreDisplay'), 
-          gameOverModal = document.getElementById('gameOverModal'), finalScoreEl = document.getElementById('finalScore'), 
-          claimTokensBtn = document.getElementById('claimTokensBtn'), playAgainBtn = document.getElementById('playAgainBtn'), 
-          claimStatus = document.getElementById('claimStatus'), backToLobbyBtn = document.getElementById('backToLobbyBtn'), 
-          launchSound = document.getElementById('launchSound'), sliceSound = document.getElementById('sliceSound'), 
-          disconnectWalletBtn = document.getElementById('disconnectWalletBtn'), walletInfoSection = document.getElementById('wallet-info');
+    const lobbyContainer = document.getElementById('lobby-container'), gameContainer = document.getElementById('game-container'), connectWalletBtn = document.getElementById('connectWalletBtn'), gmBtn = document.getElementById('gmBtn'), playerAddressEl = document.getElementById('playerAddress'), wokeBalanceEl = document.getElementById('wokeBalance'), controlsSection = document.getElementById('controls-section'), leaderboardLoadingEl = document.getElementById('leaderboard-loading'), leaderboardListEl = document.getElementById('leaderboard-list'), startGameBtn = document.getElementById('startGameBtn'), canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d'), countdownEl = document.getElementById('countdown'), scoreDisplay = document.getElementById('scoreDisplay'), highScoreDisplay = document.getElementById('highScoreDisplay'), gameOverModal = document.getElementById('gameOverModal'), finalScoreEl = document.getElementById('finalScore'), claimTokensBtn = document.getElementById('claimTokensBtn'), playAgainBtn = document.getElementById('playAgainBtn'), claimStatus = document.getElementById('claimStatus'), backToLobbyBtn = document.getElementById('backToLobbyBtn'), launchSound = document.getElementById('launchSound'), sliceSound = document.getElementById('sliceSound'), disconnectWalletBtn = document.getElementById('disconnectWalletBtn');
 
     // Image & Asset Loading
     const images = {};
     const imageSources = {
-        ada: 'ada.png', avax: 'avax.png', bch: 'bch.png', bnb: 'bnb.png', btc: 'btc.png', doge: 'doge.png', dot: 'dot.png', 
-        eth: 'eth.png', hbar: 'hbar.png', link: 'link.png', ltc: 'ltc.png', near: 'near.png', pepe: 'pepe.png', 
-        shib: 'shib.png', sol: 'sol.png', sui: 'sui.png', tron: 'tron.png', trx: 'trx.png', udsc: 'udsc.png', 
-        uni: 'uni.png', usdt: 'usdt.png', xlm: 'xlm.png', xrp: 'xrp.png', bomb: 'bomb.png'
+        ada: 'ada.png', avax: 'avax.png', bch: 'bch.png', bnb: 'bnb.png', btc: 'btc.png', doge: 'doge.png', dot: 'dot.png', eth: 'eth.png', hbar: 'hbar.png', link: 'link.png', ltc: 'ltc.png', near: 'near.png', pepe: 'pepe.png', shib: 'shib.png', sol: 'sol.png', sui: 'sui.png', tron: 'tron.png', trx: 'trx.png', udsc: 'udsc.png', uni: 'uni.png', usdt: 'usdt.png', xlm: 'xlm.png', xrp: 'xrp.png', bomb: 'bomb.png'
     };
 
     function loadImages() {
@@ -46,25 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const gravity = 0.06;
     const initialSpawnRate = 1200;
     const coinTypes = {
-        btc: { r: 40, s: 100 }, eth: { r: 40, s: 100 }, bnb: { r: 38, s: 80 }, sol: { r: 38, s: 80 }, 
-        xrp: { r: 35, s: 70 }, ada: { r: 35, s: 70 }, doge: { r: 32, s: 50 }, shib: { r: 32, s: 50 }, 
-        pepe: { r: 30, s: 40 }, link: { r: 35, s: 60 }, dot: { r: 35, s: 60 }, uni: { r: 35, s: 60 }, 
-        near: { r: 35, s: 60 }, ltc: { r: 35, s: 60 }, bch: { r: 35, s: 60 }, avax: { r: 35, s: 60 }, 
-        tron: { r: 35, s: 60 }, trx: { r: 35, s: 60 }, xlm: { r: 35, s: 60 }, hbar: { r: 35, s: 60 }, 
-        sui: { r: 35, s: 60 }, usdt: { r: 30, s: 10 }, udsc: { r: 30, s: 10 }
+        btc: { r: 40, s: 100 }, eth: { r: 40, s: 100 }, bnb: { r: 38, s: 80 }, sol: { r: 38, s: 80 }, xrp: { r: 35, s: 70 }, ada: { r: 35, s: 70 }, doge: { r: 32, s: 50 }, shib: { r: 32, s: 50 }, pepe: { r: 30, s: 40 }, link: { r: 35, s: 60 }, dot: { r: 35, s: 60 }, uni: { r: 35, s: 60 }, near: { r: 35, s: 60 }, ltc: { r: 35, s: 60 }, bch: { r: 35, s: 60 }, avax: { r: 35, s: 60 }, tron: { r: 35, s: 60 }, trx: { r: 35, s: 60 }, xlm: { r: 35, s: 60 }, hbar: { r: 35, s: 60 }, sui: { r: 35, s: 60 }, usdt: { r: 30, s: 10 }, udsc: { r: 30, s: 10 }
     };
     const coinKeys = Object.keys(coinTypes);
 
-    // Leaderboard Function (Placeholder: Real mein leaderboard contract se fetch kar, e.g., query events or off-chain API)
+    // Leaderboard Function (Assume contract has getTopScores(count) returning [{address, score}, ...])
     async function getTopHighScores(count = 10) {
         if (!contract) return [];
         try {
-            // Assume contract.getTopScores(count) exists; agar nahi to mock data ya events query kar
-            return await contract.getTopScores(count);  // [{address, score}, ...]
+            return await contract.getTopScores(count);
         } catch (error) {
             console.error('Failed to fetch top scores:', error);
-            // Mock fallback for testing
-            return Array.from({length: count}, (_, i) => ({address: `0x${'a'.repeat(38)}`, score: 1000 - i * 100}));
+            return [];
         }
     }
 
@@ -82,19 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Updated: Generic callback for both login/connect flows
-    async function onAccountConnected(info) {
-        if (!info || !info.walletAddress) return;
-        privyLoginBtn.style.display = 'none';
+    // Lobby Logic
+    async function onWalletConnected() {
         connectWalletBtn.style.display = 'none';
-        walletInfoSection.classList.remove('hidden');
-        playerUsernameEl.textContent = `Player: ${info.username}`;
-        const formattedAddress = `${info.walletAddress.substring(0, 6)}...${info.walletAddress.substring(info.walletAddress.length - 4)}`;
-        playerAddressEl.textContent = `Address: ${formattedAddress}`;
-        playerUsernameEl.classList.remove('hidden'); 
-        playerAddressEl.classList.remove('hidden'); 
-        wokeBalanceEl.classList.remove('hidden'); 
-        controlsSection.classList.remove('hidden');
+        const formattedAddress = `${userAccount.substring(0, 6)}...${userAccount.substring(userAccount.length - 4)}`;
+        playerAddressEl.textContent = `Player: ${formattedAddress}`;
+        playerAddressEl.classList.remove('hidden'); wokeBalanceEl.classList.remove('hidden'); controlsSection.classList.remove('hidden');
         updateNadBalance(wokeBalanceEl);
         getOnChainHighScore().then(hs => { highScore = hs; highScoreDisplay.textContent = `High Score: ${highScore}`; });
         leaderboardLoadingEl.style.display = 'block';
@@ -103,17 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         populateLeaderboard(topScores);
     }
 
-    // Monad Games ID Login Handler
-    async function loginWithMonadGamesID() {
-        try {
-            await loginWithPrivy();
-            // Privy login ke baad, getMonadInfo call hoga wallet.js mein (setupEthers mein)
-        } catch (error) {
-            console.error('Monad Games ID login failed:', error);
-        }
-    }
-
-    // Game Logic & Classes (Same as before - no changes)
+    // Game Logic & Classes
     class FlyingObject {
         constructor(x, y, vx, vy, radius) { this.x = x; this.y = y; this.vx = vx; this.vy = vy; this.radius = radius; }
         update() { this.vy += gravity; this.x += this.vx; this.y += this.vy; }
@@ -375,8 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event Listeners
-    privyLoginBtn.addEventListener('click', loginWithMonadGamesID);
-    connectWalletBtn.addEventListener('click', () => connectMetaMask(onAccountConnected));  // Updated callback
+    connectWalletBtn.addEventListener('click', () => connectWallet(onWalletConnected));
     gmBtn.addEventListener('click', () => handleGm(gmBtn));
     startGameBtn.addEventListener('click', startCountdown);
     canvas.addEventListener('mousedown', startSlash);
@@ -386,21 +346,5 @@ document.addEventListener('DOMContentLoaded', () => {
     playAgainBtn.addEventListener('click', startCountdown);
     claimTokensBtn.addEventListener('click', () => claimTokens(false));
     backToLobbyBtn.addEventListener('click', showLobby);
-    disconnectWalletBtn.addEventListener('click', () => {
-        logoutWithPrivy();  // Or disconnectMetaMask() based on flow
-        disconnectMetaMask();  // Safe to call both
-        // Reset UI
-        privyLoginBtn.style.display = 'block';
-        connectWalletBtn.style.display = 'block';
-        walletInfoSection.classList.add('hidden');
-        playerUsernameEl.textContent = '';
-        playerAddressEl.textContent = '';
-    });
-
-    // Initial leaderboard load (optional)
-    leaderboardLoadingEl.style.display = 'block';
-    getTopHighScores(10).then(scores => {
-        leaderboardLoadingEl.style.display = 'none';
-        populateLeaderboard(scores);
-    });
+    disconnectWalletBtn.addEventListener('click', disconnectWallet);
 });
