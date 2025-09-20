@@ -1,3 +1,4 @@
+// auth.js
 // YOUR Privy App ID is already here
 const YOUR_PRIVY_APP_ID = 'cmfqs83ei00ghjp0c6gs8ddtp';
 const MONAD_CROSS_APP_ID = 'cmd8euall0037le0my79qpz42';
@@ -6,7 +7,7 @@ const MONAD_CROSS_APP_ID = 'cmd8euall0037le0my79qpz42';
 window.privy('init', {
     appId: YOUR_PRIVY_APP_ID,
     config: {
-        loginMethods: ['email', 'google', 'twitter', 'discord', 'apple'],
+        loginMethods: ['wallet', 'email', 'google', 'twitter', 'discord', 'apple'], // Added 'wallet' for MetaMask support
         embeddedWallets: {
             createOnLogin: 'users-without-wallets',
             noPromptOnSignature: true
