@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SlashNAD - A fast-paced, on-chain crypto slashing game on the Monad Testnet.">
+    <link rel="icon" href="btc.png" type="image/png">
     <title>SlashNAD - A Game on Monad</title>
-    <script>
-        (function(p,r,i,v,y){p[i]||(p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)});v=r.createElement('script');v.async=1;v.src='https://auth.privy.io/latest/js-sdk/privy.js';y=r.getElementsByTagName('script')[0];y.parentNode.insertBefore(v,y)})(window,document,'privy');
-    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,31 +15,33 @@
 
     <div id="lobby-container">
         <div class="main-container">
-            <header class="game-title"><h1>SlashNAD</h1></header>
+            <header class="game-title">
+                <h1>SlashNAD</h1>
+            </header>
+
             <main class="content-area">
                 <div id="wallet-section" class="card">
-                    <button id="privyLoginBtn">Login with Monad Games ID</button>
-                    <p class="separator-text">or</p>
-                    <button id="connectWalletBtn">Connect with MetaMask</button>
-                    
+                    <button id="connectWalletBtn">Connect Wallet</button>
                     <div id="wallet-info" class="hidden">
                         <div class="wallet-details">
-                            <p id="playerUsername"></p>
                             <p id="playerAddress"></p>
                             <p id="wokeBalance"></p>
                         </div>
-                        <button id="disconnectWalletBtn">Logout</button>
+                        <button id="disconnectWalletBtn">Disconnect</button>
                     </div>
                 </div>
+
                 <div id="controls-section" class="card hidden">
                     <button id="gmBtn">GM On-chain</button>
                     <button id="startGameBtn">Start Slashing!</button>
                 </div>
-                 <div id="leaderboard-section" class="card">
+
+                <div id="leaderboard-section" class="card">
                     <h2>Top Slashers</h2>
                     <div id="leaderboard-loading">Loading high scores...</div>
                     <ol id="leaderboard-list"></ol>
                 </div>
+                
                 <div class="card social-links-card">
                     <p class="developer-credit">Developed by Irfan.eth</p>
                     <ul>
@@ -56,12 +57,27 @@
     <div id="game-container" class="hidden">
         <canvas id="gameCanvas"></canvas>
         <div id="countdown" class="hidden"></div>
-        <div class="ui-overlay"><div id="scoreDisplay" class="game-stat">Score: 0</div><div id="highScoreDisplay" class="game-stat">High Score: 0</div></div>
-        <div id="gameOverModal" class="modal-overlay hidden"><div class="card modal-content"><h2 class="modal-title">GAME OVER</h2><p class="final-score">Final Score: <span id="finalScore">0</span></p><div class="modal-buttons"><button id="claimTokensBtn">Claim $NAD</button><button id="playAgainBtn">Play Again</button></div><p id="claimStatus" class="claim-status"></p><button id="backToLobbyBtn" class="back-link">Back to Lobby</button></div></div>
+        <div class="ui-overlay">
+            <div id="scoreDisplay" class="game-stat">Score: 0</div>
+            <div id="highScoreDisplay" class="game-stat">High Score: 0</div>
+        </div>
+        <div id="gameOverModal" class="modal-overlay hidden">
+            <div class="card modal-content">
+                <h2 class="modal-title">GAME OVER</h2>
+                <p class="final-score">Final Score: <span id="finalScore">0</span></p>
+                <div class="modal-buttons">
+                    <button id="claimTokensBtn">Claim $NAD</button>
+                    <button id="playAgainBtn">Play Again</button>
+                </div>
+                <p id="claimStatus" class="claim-status"></p>
+                <button id="backToLobbyBtn" class="back-link">Back to Lobby</button>
+            </div>
+        </div>
     </div>
 
     <audio id="launchSound" src="launch.mp3" preload="auto"></audio>
     <audio id="sliceSound" src="slice.mp3" preload="auto"></audio>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <script type="module" src="script.js"></script>
 </body>
