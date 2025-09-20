@@ -1,4 +1,6 @@
+// wallet.js
 import { getMonadInfo, loginWithPrivy, logoutWithPrivy } from './auth.js';
+import { Privy } from 'privy'; // Ensure Privy is imported if using CDN, but handled via auth.js
 
 const MONAD_TESTNET_CHAIN_ID = 10143;
 const GAME_CONTRACT_ADDRESS = "0x476a7659EF796dE2fd1DD18AD7fe20E7C29942F7";
@@ -11,13 +13,13 @@ export let contract = null;
 export let userAccount = null;
 
 export async function setupEthers() {
-    if (!window.privy.user) return;
-    const privyProvider = await window.privy.getEthersProvider();
+    if (!privy.user) return; // Changed from window.privy.user to privy.user
+    const privyProvider = await privy.getEthersProvider();
     if (!privyProvider) { console.error("Privy provider not available"); return; }
     
     const {chainId} = await privyProvider.getNetwork();
     if (chainId !== MONAD_TESTNET_CHAIN_ID) {
-        await window.privy.switchChain(MONAD_TESTNET_CHAIN_ID);
+        await privy.switchChain(MONAD_TESTNET_CHAIN_ID);
     }
     
     provider = privyProvider;
@@ -73,9 +75,9 @@ export async function handleGm(btn) {
 }
 
 export async function connectMetaMask(callback) {
-    loginWithPrivy(); // Opens Privy login modal with wallet option for MetaMask
+    loginWithPrivy(); // Opens Privy login modal with wallet option
     const interval = setInterval(async () => {
-        if (window.privy.user) {
+        if (await privy.isAuthenticated()) { // Check authentication
             await setupEthers();
             const info = await getMonadInfo();
             if (info.walletAddress) {
