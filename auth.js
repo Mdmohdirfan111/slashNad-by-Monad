@@ -1,10 +1,9 @@
 // auth.js
-// YOUR Privy App ID is already here
 const YOUR_PRIVY_APP_ID = 'cmfqs83ei00ghjp0c6gs8ddtp';
 const MONAD_CROSS_APP_ID = 'cmd8euall0037le0my79qpz42';
 
 // Initialize Privy
-window.privy('init', {
+const privy = new Privy({
     appId: YOUR_PRIVY_APP_ID,
     config: {
         loginMethods: ['wallet', 'email', 'google', 'twitter', 'discord', 'apple'], // Added 'wallet' for MetaMask support
@@ -16,7 +15,6 @@ window.privy('init', {
             theme: 'dark',
             accentColor: '#D001FF',
         },
-        // Monad Games ID specific configuration
         loginMethodsAndOrder: [{
             id: 'cross_app_account',
             providerApp: {
@@ -30,8 +28,8 @@ window.privy('init', {
 
 // Function to get Monad Games ID wallet and username
 export async function getMonadInfo() {
-    const user = window.privy.user;
-    if (!user) return null;
+    const user = await privy.getUser();
+    if (!user) return { walletAddress: null, username: null };
 
     const crossAppAccount = user.linkedAccounts.find(
         account => account.type === "cross_app" && account.providerApp.id === MONAD_CROSS_APP_ID
@@ -56,10 +54,10 @@ export async function getMonadInfo() {
 
 // Function to handle login
 export function loginWithPrivy() {
-    window.privy('login');
+    privy.openWallet();
 }
 
 // Function to handle logout
 export function logoutWithPrivy() {
-    window.privy('logout');
+    privy.logout();
 }
