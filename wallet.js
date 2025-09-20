@@ -1,4 +1,4 @@
-import { getMonadInfo } from './auth.js';
+import { getMonadInfo, loginWithPrivy, logoutWithPrivy } from './auth.js';
 
 const MONAD_TESTNET_CHAIN_ID = 10143;
 const GAME_CONTRACT_ADDRESS = "0x476a7659EF796dE2fd1DD18AD7fe20E7C29942F7";
@@ -7,6 +7,8 @@ const LEADERBOARD_CONTRACT_ADDRESS = "0xceCBFF203C8B6044F52CE23D914A1bfD997541A4
 const LEADERBOARD_CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"_game","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_image","type":"string"},{"internalType":"string","name":"_url","type":"string"}],"name":"registerGame","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_player","type":"address"},{"internalType":"uint256","name":"_scoreAmount","type":"uint256"},{"internalType":"uint256","name":"_transactionAmount","type":"uint256"}],"name":"updatePlayerData","outputs":[],"stateMutability":"nonpayable","type":"function"}];
 
 export let provider, signer, gameContract, leaderboardContract, userWalletAddress;
+export let contract = null;
+export let userAccount = null;
 
 export async function setupEthers() {
     if (!window.privy.user) return;
@@ -22,9 +24,10 @@ export async function setupEthers() {
     signer = await provider.getSigner();
     gameContract = new ethers.Contract(GAME_CONTRACT_ADDRESS, GAME_CONTRACT_ABI, signer);
     leaderboardContract = new ethers.Contract(LEADERBOARD_CONTRACT_ADDRESS, LEADERBOARD_CONTRACT_ABI, signer);
-    
+    contract = gameContract; // Set alias
     const info = await getMonadInfo();
     userWalletAddress = info.walletAddress;
+    userAccount = info.walletAddress; // Set alias
 }
 
 export async function updateNadBalance(balanceEl) {
@@ -45,3 +48,55 @@ export async function submitScoreToLeaderboard(score) {
         console.log("Score submitted successfully to leaderboard contract!");
     } catch (error) { console.error("Failed to submit score to leaderboard:", error); }
 }
+
+export async function getOnChainHighScore() {
+    if (!gameContract || !userWalletAddress) return 0;
+    try {
+        const highScore = await gameContract.getHighScore(userWalletAddress);
+        return highScore.toNumber();
+    } catch (error) {
+        console.error("Failed to get high score:", error);
+        return 0;
+    }
+}
+
+export async function handleGm(btn) {
+    if (!gameContract) return;
+    try {
+        const tx = await gameContract.gm();
+        await tx.wait();
+        btn.textContent = 'GM Sent!';
+        btn.disabled = true;
+    } catch (error) {
+        console.error("GM failed:", error);
+    }
+}
+
+export async function connectMetaMask(callback) {
+    loginWithPrivy(); // Opens Privy login modal with wallet option for MetaMask
+    const interval = setInterval(async () => {
+        if (window.privy.user) {
+            await setupEthers();
+            const info = await getMonadInfo();
+            if (info.walletAddress) {
+                clearInterval(interval);
+                if (callback) callback(info);
+            }
+        }
+    }, 500);
+}
+
+export function disconnectMetaMask() {
+    logoutWithPrivy();
+    // Reset state
+    provider = null;
+    signer = null;
+    gameContract = null;
+    leaderboardContract = null;
+    userWalletAddress = null;
+    contract = null;
+    userAccount = null;
+}
+
+// Re-export from auth.js
+export { getMonadInfo, loginWithPrivy, logoutWithPrivy };
